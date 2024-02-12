@@ -1,0 +1,5 @@
+header {
+  height: 250px;
+  background-image: linear-gradient(135deg, rgba(9,9,121,0.8) 20%, rgba(0,212,255,0.8) 50%, rgba(9,9,121,0.8) 80%), url(https://loremflickr.com/1920/273/barista);
+  background-size: cover;
+}

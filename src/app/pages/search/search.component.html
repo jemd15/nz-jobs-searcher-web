@@ -1,0 +1,30 @@
+<div class="container-fluid margin-top">
+  <div class="row">
+    <div class="col-md-3">
+      <app-filter-menu></app-filter-menu>
+    </div>
+
+    <div class="col-md-8 container">
+      <div class="row margin-top between-md">
+        <div class="col">
+          <h1 class="padding-top">This is what are you searching</h1>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline">
+            <mat-select value="Newest">
+              <mat-option value="Newest" selected>Newest</mat-option>
+              <mat-option value="Oldest">Oldest</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row margin-top padding-top between-md">
+        @for (i of [1,2,3,4,5,6,7,8,9]; track i) {
+          <div class="col-md-4">
+            <app-job-card></app-job-card>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
