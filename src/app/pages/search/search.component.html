@@ -18,10 +18,10 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row margin-top padding-top between-md">
-        @for (i of [1,2,3,4,5,6,7,8,9]; track i) {
+      <div class="row margin-top padding-top">
+        @for (job of jobs; track job) {
           <div class="col-md-4">
-            <app-job-card></app-job-card>
+            <app-job-card [job]="job"></app-job-card>
           </div>
         }
       </div>
