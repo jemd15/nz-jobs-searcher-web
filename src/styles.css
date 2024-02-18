@@ -72,5 +72,9 @@ mat-form-field {
 }
 
 mat-card {
-  border-radius: 5% !important;
+  border-radius: 15px !important;
+}
+
+mat-card-actions {
+  margin: 8px;
 }

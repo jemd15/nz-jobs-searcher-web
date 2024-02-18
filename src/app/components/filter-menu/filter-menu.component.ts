@@ -15,5 +15,5 @@ import { MatListModule } from '@angular/material/list';
   styleUrl: './filter-menu.component.css'
 })
 export class FilterMenuComponent {
-  value = '';
+  public value: string = '';
 }

@@ -7,11 +7,14 @@ import { JobCardComponent } from '../../components/job-card/job-card.component';
 import { ApiService } from '../../providers/api/api.service';
 import { Job } from '../../models/job.model';
 import { lastValueFrom } from 'rxjs';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { JobsTableComponent } from '../../components/jobs-table/jobs-table.component';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [FilterMenuComponent, MatFormFieldModule, MatSelectModule, MatToolbarModule, JobCardComponent],
+  imports: [FilterMenuComponent, MatFormFieldModule, MatSelectModule, MatToolbarModule, JobCardComponent, MatChipsModule, MatIconModule, JobsTableComponent],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
@@ -29,7 +32,7 @@ export class SearchComponent {
     try {
       this.jobs = await lastValueFrom(this.api.getJobs('barista', 'cafe,coffee,barista', 1, 4))
     } catch (error) {
-      
+
     }
   }
 

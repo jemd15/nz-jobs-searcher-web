@@ -5,12 +5,18 @@
     </div>
 
     <div class="col-md-8 container">
-      <div class="row margin-top between-md">
+      <div class="row margin-top between-md middle-md">
         <div class="col">
           <h1 class="padding-top">This is what are you searching</h1>
         </div>
         <div class="col">
-          <mat-form-field appearance="outline">
+          <mat-chip-listbox aria-label="Fish selection">
+            <mat-chip-option><mat-icon>table_chart</mat-icon></mat-chip-option>
+            <mat-chip-option selected><mat-icon>dashboard</mat-icon></mat-chip-option>
+          </mat-chip-listbox>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" class="padding-top">
             <mat-select value="Newest">
               <mat-option value="Newest" selected>Newest</mat-option>
               <mat-option value="Oldest">Oldest</mat-option>
@@ -19,11 +25,14 @@
         </div>
       </div>
       <div class="row margin-top padding-top">
-        @for (job of jobs; track job) {
-          <div class="col-md-4">
+        <!-- @for (job of jobs; track job) {
+          <div class="col-md-3">
             <app-job-card [job]="job"></app-job-card>
           </div>
-        }
+        } -->
+        <div class="col-md-12">
+          <app-jobs-table [jobs]="jobs"></app-jobs-table>
+        </div>
       </div>
     </div>
   </div>
