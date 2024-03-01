@@ -6,17 +6,17 @@
 
     <div class="col-md-8 container">
       <div class="row margin-top between-md middle-md">
-        <div class="col">
+        <div class="col-md-6">
           <h1 class="padding-top">This is what are you searching</h1>
         </div>
-        <div class="col">
-          <mat-chip-listbox aria-label="Fish selection">
-            <mat-chip-option><mat-icon>table_chart</mat-icon></mat-chip-option>
-            <mat-chip-option selected><mat-icon>dashboard</mat-icon></mat-chip-option>
+        <div class="col-md-3">
+          <mat-chip-listbox>
+            <mat-chip-option (click)="changeWayToShow('table')"><mat-icon>table_chart</mat-icon></mat-chip-option>
+            <mat-chip-option (click)="changeWayToShow('cards')" selected><mat-icon>dashboard</mat-icon></mat-chip-option>
           </mat-chip-listbox>
         </div>
-        <div class="col">
-          <mat-form-field appearance="outline" class="padding-top">
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="padding-top" [ngClass]="{ 'hide': wayToShow === 'table' }">
             <mat-select value="Newest">
               <mat-option value="Newest" selected>Newest</mat-option>
               <mat-option value="Oldest">Oldest</mat-option>
@@ -25,14 +25,17 @@
         </div>
       </div>
       <div class="row margin-top padding-top">
-        <!-- @for (job of jobs; track job) {
-          <div class="col-md-3">
-            <app-job-card [job]="job"></app-job-card>
+        @if (wayToShow === 'cards') {
+          @for (job of jobs; track job) {
+            <div class="col-md-3">
+              <app-job-card [job]="job"></app-job-card>
+            </div>
+          }
+        } @else {
+          <div class="col-md-12">
+            <app-jobs-table [jobs]="jobs"></app-jobs-table>
           </div>
-        } -->
-        <div class="col-md-12">
-          <app-jobs-table [jobs]="jobs"></app-jobs-table>
-        </div>
+        }
       </div>
     </div>
   </div>

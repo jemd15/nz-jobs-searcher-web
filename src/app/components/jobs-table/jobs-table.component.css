@@ -1,3 +1,15 @@
 mat-table {
   width: 100%;
 }
+
+.greenAccent {
+  background-color: lightgreen;
+}
+
+.orangeAccent {
+  background-color: moccasin;
+}
+
+.redAccent {
+  background-color: lightcoral;
+}

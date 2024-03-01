@@ -3,14 +3,14 @@ import { Job } from '../../models/job.model';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 // import {MatSort, MatSortModule, SortDirection} from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-jobs-table',
   standalone: true,
   // imports: [MatTableModule, MatSortModule, MatIconModule],
-  imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule],
+  imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass],
   templateUrl: './jobs-table.component.html',
   styleUrl: './jobs-table.component.css'
 })
@@ -23,6 +23,7 @@ export class JobsTableComponent implements AfterViewInit, OnChanges {
   displayedColumns: string[] = [
     'title',
     'location',
+    'travelTime',
     'listingDate',
     'salary',
     'classification',
@@ -49,7 +50,7 @@ export class JobsTableComponent implements AfterViewInit, OnChanges {
     // this.dataSource.sort = this.sort;
   }
 
-  public handlePage(e: PageEvent) {
+  public handlePageEvent(e: PageEvent) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
 

@@ -12,11 +12,17 @@
     <td mat-cell *matCellDef="let row"> {{row.location.split(',')[0]}} </td>
   </ng-container>
 
+  <!-- Location Travel Time -->
+  <ng-container matColumnDef="travelTime">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Travel Time </th>
+    <td mat-cell *matCellDef="let row" [ngClass]="{ 'greenAccent': row.accent === 'green', 'orangeAccent': row.accent === 'orange', 'redAccent': row.accent === 'red', }"> {{row.travelTime.split(',')[0]}} </td>
+  </ng-container>
+
   <!-- Listing Date Column -->
   <ng-container matColumnDef="listingDate">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Listing Date</th>
     <td mat-cell *matCellDef="let row">
-      @if(!row.listingDate.includes('featured')) {
+      @if(row.listingDate && !row.listingDate.includes('featured')) {
         {{row.listingDate | date}}
       } @else {
         {{row.listingDate}}

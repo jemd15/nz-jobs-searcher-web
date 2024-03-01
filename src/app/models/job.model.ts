@@ -10,4 +10,5 @@ export interface Job {
   id: string
   map: string
   img: string
+  travelTime: string
 }

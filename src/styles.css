@@ -78,3 +78,7 @@ mat-card {
 mat-card-actions {
   margin: 8px;
 }
+
+.hide {
+  visibility: hidden;
+}
