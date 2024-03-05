@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Job } from '../../models/job.model';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 // import {MatSort, MatSortModule, SortDirection} from '@angular/material/sort';
@@ -7,57 +7,51 @@ import { DatePipe, NgClass } from '@angular/common';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
-  selector: 'app-jobs-table',
-  standalone: true,
-  // imports: [MatTableModule, MatSortModule, MatIconModule],
-  imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass],
-  templateUrl: './jobs-table.component.html',
-  styleUrl: './jobs-table.component.css'
+	selector: 'app-jobs-table',
+	standalone: true,
+	// imports: [MatTableModule, MatSortModule, MatIconModule],
+	imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass],
+	templateUrl: './jobs-table.component.html',
+	styleUrl: './jobs-table.component.css',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JobsTableComponent implements AfterViewInit, OnChanges {
-  
-  // @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @Input() jobs!: Job[]
-  
-  displayedColumns: string[] = [
-    'title',
-    'location',
-    'travelTime',
-    'listingDate',
-    'salary',
-    'classification',
-    'site',
-    ' '
-  ];
-  dataSource: MatTableDataSource<Job>;
+export class JobsTableComponent implements AfterViewInit {
+	// @ViewChild(MatSort) sort!: MatSort;
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
+	private _jobs!: Job[];
+	@Input() set jobs(jobs: Job[]) {
+		this._jobs = jobs;
+		this.onJobsChanged();
+	}
 
-  currentPage: number = 1;
-  pageSize: number = 10;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
+	get jobs() {
+		return this._jobs;
+	}
 
-  constructor() {
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(this.jobs);
-  }
+	displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'classification', 'site', ' '];
+	dataSource!: MatTableDataSource<Job>;
 
-  ngOnChanges(changes: SimpleChanges) {
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(this.jobs);
-  }
+	currentPage: number = 1;
+	pageSize: number = 10;
+	pageSizeOptions: number[] = [5, 10, 25, 100];
 
-  ngAfterViewInit() {
-    // this.dataSource.sort = this.sort;
-  }
+	constructor(private cdr: ChangeDetectorRef) {}
 
-  public handlePageEvent(e: PageEvent) {
-    this.currentPage = e.pageIndex;
-    this.pageSize = e.pageSize;
+	onJobsChanged() {
+		this.dataSource = new MatTableDataSource(this._jobs);
+		this.cdr.markForCheck();
+	}
 
-    console.log(this.currentPage, this.pageSize)
-  }
+	ngAfterViewInit() {
+		// this.dataSource.sort = this.sort;
+	}
 
-  paginate(jobs: Job[]) {
+	public handlePageEvent(e: PageEvent) {
+		this.currentPage = e.pageIndex;
+		this.pageSize = e.pageSize;
 
-  }
+		console.log(this.currentPage, this.pageSize);
+	}
+
+	paginate(jobs: Job[]) {}
 }

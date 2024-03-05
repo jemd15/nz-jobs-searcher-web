@@ -1,15 +1,15 @@
 <mat-card appearance="outlined" class="margin-bottom">
-  <img mat-card-image [src]="job.img" alt="job image">
-  <!-- <iframe mat-card-image frameborder="0" scrolling="no" marginheight="0" marginwidth="0" [src]="job.map | safe">
+	<img mat-card-image [src]="job.img" alt="job image" />
+	<!-- <iframe mat-card-image frameborder="0" scrolling="no" marginheight="0" marginwidth="0" [src]="job.map | safe">
     <a href="https://www.gps.ie/car-satnav-gps/">Sat Navs</a>
   </iframe> -->
-  <mat-card-content class="margin-top margin-bottom">
-    <p>{{job.title}}</p>
-  </mat-card-content>
-  <mat-card-actions align="end">
-    <a mat-flat-button extended [href]="job.url" target="_blank" color="primary">
-      <mat-icon>open_in_new</mat-icon>
-      CHECK
-    </a>
-  </mat-card-actions>
+	<mat-card-content class="margin-top margin-bottom">
+		<p>{{ job.title }}</p>
+	</mat-card-content>
+	<mat-card-actions align="end">
+		<a mat-flat-button extended [href]="job.url" target="_blank" color="primary">
+			<mat-icon>open_in_new</mat-icon>
+			CHECK
+		</a>
+	</mat-card-actions>
 </mat-card>

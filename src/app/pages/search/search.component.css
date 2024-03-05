@@ -1,0 +1,8 @@
+mat-toolbar {
+	padding: 0;
+}
+
+.mat-mdc-form-field {
+	display: ruby;
+	text-align: right;
+}

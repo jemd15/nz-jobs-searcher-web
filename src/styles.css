@@ -1,84 +1,91 @@
 /* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; background-color: ghostwhite; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+	height: 100%;
+	background-color: ghostwhite;
+}
+body {
+	margin: 0;
+	font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
 
 .row {
-  margin: 0;
+	margin: 0;
 }
 
 .padding-top {
-  padding-top: 16px;
+	padding-top: 16px;
 }
 
 .padding-bottom {
-  padding-bottom: 16px;
+	padding-bottom: 16px;
 }
 
 .margin-top {
-  margin-top: 16px;
+	margin-top: 16px;
 }
 
 .margin-bottom {
-  margin-bottom: 16px;
+	margin-bottom: 16px;
 }
 
 .full-width {
-  width: 100%;
+	width: 100%;
 }
 
 .vh-10 {
-  height: 10vh;
+	height: 10vh;
 }
 
 .vh-20 {
-  height: 20vh;
+	height: 20vh;
 }
 
 .vh-30 {
-  height: 30vh;
+	height: 30vh;
 }
 
 .vh-40 {
-  height: 40vh;
+	height: 40vh;
 }
 
 .vh-50 {
-  height: 50vh;
+	height: 50vh;
 }
 
 .vh-60 {
-  height: 60vh;
+	height: 60vh;
 }
 
 .vh-70 {
-  height: 70vh;
+	height: 70vh;
 }
 
 .shadow {
-  box-shadow: var(--mdc-elevated-card-container-elevation);
+	box-shadow: var(--mdc-elevated-card-container-elevation);
 }
 
 .mat-success {
-  background-color: green !important;
-  color: #fff !important;
+	background-color: green !important;
+	color: #fff !important;
 }
 
 .txt-white {
-  color: white;
+	color: white;
 }
 
 mat-form-field {
-  width: 100%;
+	width: 100%;
 }
 
 mat-card {
-  border-radius: 15px !important;
+	border-radius: 15px !important;
 }
 
 mat-card-actions {
-  margin: 8px;
+	margin: 8px;
 }
 
 .hide {
-  visibility: hidden;
+	visibility: hidden;
 }

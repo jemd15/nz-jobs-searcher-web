@@ -1,42 +1,28 @@
 <div class="container-fluid margin-top">
-  <div class="row">
-    <div class="col-md-3">
-      <app-filter-menu></app-filter-menu>
-    </div>
-
-    <div class="col-md-8 container">
-      <div class="row margin-top between-md middle-md">
-        <div class="col-md-6">
-          <h1 class="padding-top">This is what are you searching</h1>
-        </div>
-        <div class="col-md-3">
-          <mat-chip-listbox>
-            <mat-chip-option (click)="changeWayToShow('table')"><mat-icon>table_chart</mat-icon></mat-chip-option>
-            <mat-chip-option (click)="changeWayToShow('cards')" selected><mat-icon>dashboard</mat-icon></mat-chip-option>
-          </mat-chip-listbox>
-        </div>
-        <div class="col-md-3">
-          <mat-form-field appearance="outline" class="padding-top" [ngClass]="{ 'hide': wayToShow === 'table' }">
-            <mat-select value="Newest">
-              <mat-option value="Newest" selected>Newest</mat-option>
-              <mat-option value="Oldest">Oldest</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row margin-top padding-top">
-        @if (wayToShow === 'cards') {
-          @for (job of jobs; track job) {
-            <div class="col-md-3">
-              <app-job-card [job]="job"></app-job-card>
-            </div>
-          }
-        } @else {
-          <div class="col-md-12">
-            <app-jobs-table [jobs]="jobs"></app-jobs-table>
-          </div>
-        }
-      </div>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-md-12 container">
+			<div class="row margin-top between-md middle-md">
+				<div class="col-md-12">
+					<mat-toolbar>
+						<span>This is what are you searching</span>
+						<mat-form-field appearance="outline">
+							<mat-icon matIconPrefix>search</mat-icon>
+							<mat-label>Search</mat-label>
+							<input matInput type="text" [(ngModel)]="filterText" />
+							@if (filterText) {
+								<button matSuffix mat-icon-button aria-label="Clear" (click)="filterText = ''">
+									<mat-icon>close</mat-icon>
+								</button>
+							}
+						</mat-form-field>
+					</mat-toolbar>
+				</div>
+			</div>
+			<div class="row margin-top padding-top">
+				<div class="col-md-12">
+					<app-jobs-table [jobs]="jobs"></app-jobs-table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
