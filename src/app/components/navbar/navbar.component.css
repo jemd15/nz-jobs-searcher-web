@@ -1,0 +1,8 @@
+.mat-mdc-form-field {
+	display: ruby;
+	text-align: right;
+}
+
+mat-form-field {
+	width: 100%;
+}

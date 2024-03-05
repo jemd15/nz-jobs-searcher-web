@@ -14,13 +14,14 @@ export class WebSocketService {
 
 	connect() {
 		const search_id = Math.floor(Math.random() * 100000);
-		localStorage.setItem('search_id', search_id.toString());
 
 		this.socket = io(this.uri, {
 			query: {
 				search_id,
 			},
 		});
+
+		return search_id;
 	}
 
 	listen(eventName: string): Observable<Job> {

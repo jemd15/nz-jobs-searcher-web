@@ -11,21 +11,24 @@ import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { Distance } from '../../models/distance.model';
+import { FilterMenuComponent } from '../../components/filter-menu/filter-menu.component';
 
 @Component({
 	selector: 'app-search',
 	standalone: true,
-	imports: [MatFormFieldModule, MatInputModule, MatIconModule, MatSelectModule, MatToolbarModule, JobsTableComponent, NgClass, FormsModule],
+	imports: [MatFormFieldModule, MatInputModule, MatIconModule, MatSelectModule, MatToolbarModule, JobsTableComponent, NgClass, FormsModule, FilterMenuComponent],
 	templateUrl: './search.component.html',
 	styleUrl: './search.component.css',
 })
 export class SearchComponent {
 	@ViewChild(JobsTableComponent, { static: true }) jobsTableComponent!: JobsTableComponent;
+	@ViewChild(FilterMenuComponent, { static: true }) filterMenuComponent!: FilterMenuComponent;
 
 	public jobs: Job[] = [];
 	public filterText: string = '';
 	private locations: Distance[] = [];
 	public originAddress: string = '48 Saintly Lane, Avondale, Auckland 0600, Nueva Zelanda';
+	public search: string = 'barista';
 
 	constructor(
 		private api: ApiService,
@@ -38,12 +41,11 @@ export class SearchComponent {
 		this.getJobs();
 	}
 
-	getJobs() {
-		this.ws.connect();
-		const search_id = localStorage.getItem('search_id');
+	private getJobs() {
+		const search_id = this.ws.connect();
 		this.ws.emit('search', {
 			search_id,
-			search: 'barista',
+			search: this.search,
 			topics: ['cafe', 'coffee', 'barista'],
 			minPage: 1,
 			maxPage: 30,
@@ -81,14 +83,14 @@ export class SearchComponent {
 					this.jobs.push(data);
 					this.locations.push(location);
 					localStorage.setItem('locations', JSON.stringify(this.locations));
-					this.jobsTableComponent.jobs = this.jobs;
+					this.setJobsInChildren(this.jobs);
 				})
 				.catch(() => {
 					data.travelTime = 'unknown';
 					data.accent = 'none';
 
 					this.jobs.push(data);
-					this.jobsTableComponent.jobs = this.jobs;
+					this.setJobsInChildren(this.jobs);
 				});
 		} else {
 			data.travelTime = this.locations[locationIndex].rows[0].elements[0].duration.text;
@@ -102,7 +104,12 @@ export class SearchComponent {
 			}
 
 			this.jobs.push(data);
-			this.jobsTableComponent.jobs = this.jobs;
+			this.setJobsInChildren(this.jobs);
 		}
+	}
+
+	private setJobsInChildren(jobs: Job[]) {
+		this.jobsTableComponent.jobs = this.jobs;
+		this.filterMenuComponent.jobs = this.jobs;
 	}
 }

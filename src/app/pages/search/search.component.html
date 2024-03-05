@@ -1,26 +1,12 @@
-<div class="container-fluid margin-top">
+<div class="container margin-top">
 	<div class="row">
-		<div class="col-md-12 container">
-			<div class="row margin-top between-md middle-md">
-				<div class="col-md-12">
-					<mat-toolbar>
-						<span>This is what are you searching</span>
-						<mat-form-field appearance="outline">
-							<mat-icon matIconPrefix>search</mat-icon>
-							<mat-label>Search</mat-label>
-							<input matInput type="text" [(ngModel)]="filterText" />
-							@if (filterText) {
-								<button matSuffix mat-icon-button aria-label="Clear" (click)="filterText = ''">
-									<mat-icon>close</mat-icon>
-								</button>
-							}
-						</mat-form-field>
-					</mat-toolbar>
+		<div class="col-md-12">
+			<div class="row margin-top between-md">
+				<div class="col-md-3">
+					<app-filter-menu [(jobs)]="jobs"></app-filter-menu>
 				</div>
-			</div>
-			<div class="row margin-top padding-top">
-				<div class="col-md-12">
-					<app-jobs-table [jobs]="jobs"></app-jobs-table>
+				<div class="col-md-9">
+					<app-jobs-table [jobs]="jobs" [search]="search"></app-jobs-table>
 				</div>
 			</div>
 		</div>
