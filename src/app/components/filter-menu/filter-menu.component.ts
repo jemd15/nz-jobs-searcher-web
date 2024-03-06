@@ -145,14 +145,7 @@ export class FilterMenuComponent {
 
 			if (dayjs(job.listingDate).isBetween(dayjs().subtract(this.maxListingDateDays, 'days'), dayjs(), 'days', '[]')) isDateAproved = true;
 
-			if ((isAproved || (!this.keyWordsWanted.length && !this.keyWordsUnwanted.length)) && isDateAproved) {
-				jobsFiltered.push(job);
-			} else {
-				console.table(job);
-				console.log(`isDateAproved:`, isDateAproved);
-				console.log(`from:`, dayjs().subtract(this.maxListingDateDays, 'days').format());
-				console.log(`to:`, dayjs().format());
-			}
+			if ((isAproved || (!this.keyWordsWanted.length && !this.keyWordsUnwanted.length)) && isDateAproved) jobsFiltered.push(job);
 		}
 
 		this.jobsChange.emit(jobsFiltered);
