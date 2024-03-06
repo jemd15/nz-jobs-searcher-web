@@ -1,6 +1,16 @@
 <mat-card appearance="outlined">
 	<mat-card-content>
-		<h1><mat-icon>filter_list</mat-icon> Filter</h1>
+		<div class="row middle-md">
+			<div class="col-md-2">
+				<mat-icon>filter_list</mat-icon>
+			</div>
+			<div class="col-md">
+				<h1 class="no-margin">Filter</h1>
+			</div>
+			<div class="col-md-4">
+				<a mat-flat-button (click)="clearFilters()">Clear</a>
+			</div>
+		</div>
 
 		<mat-divider></mat-divider>
 
@@ -46,12 +56,12 @@
 
 		<div mat-subheader>Travel time (mins)</div>
 		<mat-slider min="0" max="120" step="15" discrete>
-			<input matSliderThumb [(ngModel)]="maxTravelTime" showTickMarks="true" />
+			<input matSliderThumb [(ngModel)]="maxTravelTime" (dragEnd)="filterJobs()" showTickMarks="true" />
 		</mat-slider>
 
 		<div mat-subheader>Days since listing date</div>
 		<mat-slider min="0" max="60" step="1" discrete>
-			<input matSliderThumb [(ngModel)]="maxListingDateDays" showTickMarks="true" />
+			<input matSliderThumb [(ngModel)]="maxListingDateDays" (dragEnd)="filterJobs()" showTickMarks="true" />
 		</mat-slider>
 	</mat-card-content>
 </mat-card>

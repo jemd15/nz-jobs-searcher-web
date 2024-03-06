@@ -12,11 +12,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { Job } from '../../models/job.model';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
 	selector: 'app-filter-menu',
 	standalone: true,
-	imports: [MatCardModule, MatSliderModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule, MatListModule, MatChipsModule],
+	imports: [MatCardModule, MatToolbarModule, MatSliderModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule, MatListModule, MatChipsModule],
 	templateUrl: './filter-menu.component.html',
 	styleUrl: './filter-menu.component.css',
 })
@@ -124,31 +125,37 @@ export class FilterMenuComponent {
 		}
 	}
 
-	private filterJobs() {
+	public async filterJobs() {
 		let jobsFiltered: Job[] = [];
-		for (const job of this._jobs) {
+		for await (const job of this._jobs) {
 			let isAproved: boolean = false;
 			let isDateAproved: boolean = false;
 
 			if (this.keyWordsWanted.length) {
-				for (const keyword of this.keyWordsWanted) {
+				for await (const keyword of this.keyWordsWanted) {
 					if (job.title.includes(keyword)) isAproved = true;
 				}
 			}
 
 			if (this.keyWordsUnwanted.length) {
-				for (const keyword of this.keyWordsUnwanted) {
+				for await (const keyword of this.keyWordsUnwanted) {
 					if (job.title.includes(keyword)) isAproved = false;
 				}
 			}
 
-			if ((dayjs(job.listingDate).isBetween(dayjs().subtract(this.maxListingDateDays, 'days'), dayjs()), 'days')) isDateAproved = true;
+			if (dayjs(job.listingDate).isBetween(dayjs().subtract(this.maxListingDateDays, 'days'), dayjs(), 'days', '[]')) isDateAproved = true;
 
-			if (isAproved && isDateAproved) jobsFiltered.push(job);
+			if ((isAproved || (!this.keyWordsWanted.length && !this.keyWordsUnwanted.length)) && isDateAproved) {
+				jobsFiltered.push(job);
+			} else {
+				console.table(job);
+				console.log(`isDateAproved:`, isDateAproved);
+				console.log(`from:`, dayjs().subtract(this.maxListingDateDays, 'days').format());
+				console.log(`to:`, dayjs().format());
+			}
 		}
 
-		this._jobs = jobsFiltered;
-		this.jobsChange.emit(this._jobs);
+		this.jobsChange.emit(jobsFiltered);
 	}
 
 	public clearFilters() {
