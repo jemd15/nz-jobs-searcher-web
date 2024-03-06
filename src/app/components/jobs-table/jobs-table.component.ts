@@ -24,19 +24,15 @@ export class JobsTableComponent implements AfterViewInit {
 		this._jobs = jobs;
 		this.onJobsChanged();
 	}
-
 	get jobs() {
 		return this._jobs;
 	}
-
 	@Input() search!: string;
-
-	displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'site', ' '];
-	dataSource!: MatTableDataSource<Job>;
-
-	currentPage: number = 1;
-	pageSize: number = 10;
-	pageSizeOptions: number[] = [5, 10, 25, 100];
+	public displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'site', ' '];
+	public dataSource!: MatTableDataSource<Job>;
+	public currentPage: number = 1;
+	public pageSize: number = 10;
+	public pageSizeOptions: number[] = [5, 10, 25, 100];
 
 	constructor(private cdr: ChangeDetectorRef) {}
 
@@ -56,5 +52,5 @@ export class JobsTableComponent implements AfterViewInit {
 		console.log(this.currentPage, this.pageSize);
 	}
 
-	paginate(jobs: Job[]) {}
+	public paginate(jobs: Job[]) {}
 }

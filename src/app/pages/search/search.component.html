@@ -3,10 +3,76 @@
 		<div class="col-md-12">
 			<div class="row margin-top between-md">
 				<div class="col-md-3">
-					<app-filter-menu [(jobs)]="jobs"></app-filter-menu>
+					<mat-card appearance="outlined">
+						<mat-card-content>
+							<div class="row middle-md">
+								<div class="col-md-2">
+									<mat-icon>filter_list</mat-icon>
+								</div>
+								<div class="col-md">
+									<h1 class="no-margin">Filter</h1>
+								</div>
+								<div class="col-md-4">
+									<a mat-flat-button (click)="clearFilters()">Clear</a>
+								</div>
+							</div>
+
+							<mat-divider></mat-divider>
+
+							<div mat-subheader class="margin-top">Words wanted</div>
+							<mat-form-field appearance="outline">
+								<mat-chip-grid #wantedChipsGrid aria-label="Enter keywords">
+									@for (keyword of keyWordsWanted; track keyword) {
+										<mat-chip-row (removed)="removeWanted(keyword)" [editable]="true" (edited)="editWanted(keyword, $event)" [aria-description]="'press enter to edit ' + keyword">
+											{{ keyword }}
+											<button matChipRemove [attr.aria-label]="'remove ' + keyword">
+												<mat-icon>cancel</mat-icon>
+											</button>
+										</mat-chip-row>
+									}
+									<input
+										placeholder="New keyword..."
+										[matChipInputFor]="wantedChipsGrid"
+										[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+										[matChipInputAddOnBlur]="addOnBlur"
+										(matChipInputTokenEnd)="addWanted($event)" />
+								</mat-chip-grid>
+							</mat-form-field>
+
+							<div mat-subheader>Words unwanted</div>
+							<mat-form-field appearance="outline">
+								<mat-chip-grid #unwantedChipsGrid aria-label="Enter keywords">
+									@for (keyword of keyWordsUnwanted; track keyword) {
+										<mat-chip-row (removed)="removeUnwanted(keyword)" [editable]="true" (edited)="editUnwanted(keyword, $event)" [aria-description]="'press enter to edit ' + keyword">
+											{{ keyword }}
+											<button matChipRemove [attr.aria-label]="'remove ' + keyword">
+												<mat-icon>cancel</mat-icon>
+											</button>
+										</mat-chip-row>
+									}
+									<input
+										placeholder="New keyword..."
+										[matChipInputFor]="unwantedChipsGrid"
+										[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+										[matChipInputAddOnBlur]="addOnBlur"
+										(matChipInputTokenEnd)="addUnwanted($event)" />
+								</mat-chip-grid>
+							</mat-form-field>
+
+							<div mat-subheader>Travel time (mins)</div>
+							<mat-slider min="0" max="120" step="15" discrete>
+								<input matSliderThumb [(ngModel)]="maxTravelTime" (dragEnd)="filterJobs()" showTickMarks="true" />
+							</mat-slider>
+
+							<div mat-subheader>Days since listing date</div>
+							<mat-slider min="0" max="60" step="1" discrete>
+								<input matSliderThumb [(ngModel)]="maxListingDateDays" (dragEnd)="filterJobs()" showTickMarks="true" />
+							</mat-slider>
+						</mat-card-content>
+					</mat-card>
 				</div>
 				<div class="col-md-9">
-					<app-jobs-table [jobs]="jobs" [search]="search"></app-jobs-table>
+					<app-jobs-table [jobs]="jobsFiltered" [search]="search"></app-jobs-table>
 				</div>
 			</div>
 		</div>
