@@ -185,7 +185,7 @@ export class SearchComponent {
 		 */
 		if (locationIndex < 0) {
 			this.api
-				.getDistanceInfo(this.originAddress, data.location)
+				.getDistanceInfo(this.originAddress, data.location.trim())
 				.then((location: Distance) => {
 					data.travelTime = location.rows[0].elements[0].duration.text;
 
@@ -241,7 +241,12 @@ export class SearchComponent {
 			 */
 			if (this.keyWordsWanted.length) {
 				for await (const keyword of this.keyWordsWanted) {
-					if (job.title.includes(keyword) || job.company.includes(keyword) || job.location.includes(keyword)) hasWantedWords = true;
+					if (
+						job.title.toLowerCase().normalize('NFD').includes(keyword.toLowerCase()) ||
+						job.company.toLowerCase().normalize('NFD').includes(keyword.toLowerCase()) ||
+						job.location.toLowerCase().normalize('NFD').includes(keyword.toLowerCase())
+					)
+						hasWantedWords = true;
 				}
 			} else {
 				hasWantedWords = true;
@@ -253,7 +258,11 @@ export class SearchComponent {
 			 */
 			if (this.keyWordsUnwanted.length) {
 				for await (const keyword of this.keyWordsUnwanted) {
-					if (job.title.includes(keyword) || job.company.includes(keyword) || job.location.includes(keyword)) {
+					if (
+						job.title.toLowerCase().normalize('NFD').includes(keyword.toLowerCase()) ||
+						job.company.toLowerCase().normalize('NFD').includes(keyword.toLowerCase()) ||
+						job.location.toLowerCase().normalize('NFD').includes(keyword.toLowerCase())
+					) {
 						hasUnwantedWords = true;
 						break;
 					} else {
