@@ -176,14 +176,15 @@ export class SearchComponent {
 
 	private async getDistanceInfo(data: Job) {
 		const locationIndex: number = this.locations.findIndex(location => {
-			return location.destination_addresses[0].includes(data.location) && location.origin_addresses[0].includes(this.originAddress);
+			return location.rows[0].elements[0].destination.includes(data.location) && location.rows[0].elements[0].origin.includes(this.originAddress);
 		});
 
 		/**
 		 * buscamos la dirección en localStorage y
 		 * si no está ahí, la traemos desde el API
 		 */
-		if (locationIndex < 0) {
+		// if (locationIndex < 0) {
+		if (false) {
 			this.api
 				.getDistanceInfo(this.originAddress, data.location.trim())
 				.then((location: Distance) => {
@@ -210,7 +211,7 @@ export class SearchComponent {
 					this.jobsTableComponent.jobs = this.jobs;
 				});
 		} else {
-			data.travelTime = this.locations[locationIndex].rows[0].elements[0].duration.text;
+			data.travelTime = this.locations[locationIndex]?.rows[0].elements[0].duration.text || 'unknown';
 
 			if (!data.travelTime.includes('hour') && parseInt(data.travelTime.split(' ')[0]) <= 45) {
 				data.accent = 'green';
@@ -303,11 +304,11 @@ export class SearchComponent {
 	}
 
 	private parseTravelTime(travelTime: string): number {
-		if (travelTime.includes('hrs') && travelTime.includes('min')) {
+		if (travelTime.includes('hour') && travelTime.includes('min')) {
 			return parseInt(travelTime.split(' ')[0], 10) * 60 + parseInt(travelTime.split(' ')[2], 10);
-		} else if (travelTime.includes('hrs') && !travelTime.includes('min')) {
+		} else if (travelTime.includes('hour') && !travelTime.includes('min')) {
 			return parseInt(travelTime.split(' ')[0], 10) * 60;
-		} else if (!travelTime.includes('hrs') && travelTime.includes('min')) {
+		} else if (!travelTime.includes('hour') && travelTime.includes('min')) {
 			return parseInt(travelTime.split(' ')[0], 10);
 		} else {
 			return 0;

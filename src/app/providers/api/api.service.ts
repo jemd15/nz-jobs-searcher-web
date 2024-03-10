@@ -8,10 +8,8 @@ import { environment } from '../../../environments/environment';
 	providedIn: 'root',
 })
 export class ApiService {
-	// private apiUrl: string = environment.HOST + '/api'
-	private apiUrl: string = 'http://localhost:3000/api';
-
-	private distanceMatrixUrl: string = 'https://api.distancematrix.ai';
+	private apiUrl: string = environment.backendApi;
+	private distanceMatrixUrl: string = environment.distanceMatrixUrl;
 
 	constructor(private http: HttpClient) {}
 
