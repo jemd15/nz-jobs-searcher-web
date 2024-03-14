@@ -19,6 +19,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	selector: 'app-search',
@@ -50,11 +51,10 @@ export class SearchComponent {
 
 	readonly separatorKeysCodes = [ENTER, COMMA] as const;
 	private locations: Distance[] = [];
-	public filterText: string = '';
+	private locationsUnknown: string[] = [];
 	public originAddress: string = '48 Saintly Lane, Avondale, Auckland 0600, Nueva Zelanda';
-	public search: string = 'barista';
+	public search: string = '';
 	public addOnBlur = true;
-	public value: string = '';
 	public keyWordsWanted: string[] = [];
 	public keyWordsUnwanted: string[] = [];
 	public maxTravelTime: number = 120;
@@ -65,12 +65,32 @@ export class SearchComponent {
 	constructor(
 		private api: ApiService,
 		protected ws: WebSocketService,
+		private route: ActivatedRoute,
+		private router: Router,
 	) {
-		// cargamos las direcciones desde localHost en memoria
+		// cargamos las direcciones desde localStorage en memoria
 		this.locations = JSON.parse(localStorage.getItem('locations') || '[]');
+		this.locationsUnknown = JSON.parse(localStorage.getItem('locationsUnknown') || '[]')?.locations;
 
-		// realizamos la búsqueda
-		this.getJobs();
+		if (!dayjs(JSON.parse(localStorage.getItem('locationsUnknown') || '[]').date).isSame(dayjs(), 'week')) {
+			localStorage.removeItem('locationsUnknown');
+			this.locationsUnknown = [];
+		}
+
+		// acomodamos los filtros según los queryParameters
+		this.route.queryParamMap
+			.subscribe(params => {
+				console.log('then');
+				this.search = params.get('search') || this.search;
+				this.keyWordsWanted = params.get('keyWordsWanted')?.split(',') || this.keyWordsWanted;
+				this.keyWordsUnwanted = params.get('keyWordsUnwanted')?.split(',') || this.keyWordsUnwanted;
+				this.maxTravelTime = parseInt(params.get('maxTravelTime') || this.maxTravelTime.toString(), 10);
+				this.maxListingDateDays = parseInt(params.get('maxListingDateDays') || this.maxListingDateDays.toString(), 10);
+
+				// realizamos la búsqueda
+				this.getJobs();
+			})
+			.unsubscribe();
 
 		dayjs.extend(isBetween);
 	}
@@ -163,7 +183,7 @@ export class SearchComponent {
 		this.ws.emit('search', {
 			search_id,
 			search: this.search,
-			topics: ['cafe', 'coffee', 'barista'],
+			topics: [],
 			minPage: 1,
 			maxPage: 30,
 		});
@@ -175,16 +195,18 @@ export class SearchComponent {
 	}
 
 	private async getDistanceInfo(data: Job) {
-		const locationIndex: number = this.locations.findIndex(location => {
-			return location.rows[0].elements[0].destination.includes(data.location) && location.rows[0].elements[0].origin.includes(this.originAddress);
-		});
-
 		/**
 		 * buscamos la dirección en localStorage y
 		 * si no está ahí, la traemos desde el API
 		 */
-		// if (locationIndex < 0) {
-		if (false) {
+		const locationIndex: number = this.locations.findIndex(location => {
+			return location.rows[0].elements[0].destination.includes(data.location) && location.rows[0].elements[0].origin.includes(this.originAddress);
+		});
+		const locationsUnknownIndex: number = this.locationsUnknown.findIndex(location => {
+			return location.includes(data.location);
+		});
+
+		if (locationIndex < 0 && locationsUnknownIndex < 0) {
 			this.api
 				.getDistanceInfo(this.originAddress, data.location.trim())
 				.then((location: Distance) => {
@@ -207,6 +229,21 @@ export class SearchComponent {
 					data.travelTime = 'unknown';
 					data.accent = 'none';
 
+					/**
+					 * las direcciones no encontradas las guardamos en un
+					 * arreglo temporal para no sobrecargar de peticiones
+					 * el API de distancias
+					 */
+					if (!this.locationsUnknown.includes(data.location)) this.locationsUnknown.push(data.location);
+
+					localStorage.setItem(
+						'locationsUnknown',
+						JSON.stringify({
+							date: dayjs().format(),
+							locations: this.locationsUnknown,
+						}),
+					);
+
 					this.jobs.push(data);
 					this.jobsTableComponent.jobs = this.jobs;
 				});
@@ -227,31 +264,24 @@ export class SearchComponent {
 	}
 
 	public async filterJobs() {
+		this.router.navigate([], {
+			relativeTo: this.route,
+			queryParams: {
+				search: this.search,
+				keyWordsWanted: this.keyWordsWanted.join(',') || [],
+				keyWordsUnwanted: this.keyWordsUnwanted.join(',') || [],
+				maxTravelTime: this.maxTravelTime,
+				maxListingDateDays: this.maxListingDateDays,
+			},
+		});
+
 		this.jobsFiltered = [];
-		console.count('number of filterJobs calls');
 		for await (const job of this.jobs) {
 			let hasWantedWords: boolean = false;
 			let hasUnwantedWords: boolean = false;
 			let isAproved: boolean = false;
 			let isDateAproved: boolean = false;
 			let isTravelTimeAproved: boolean = false;
-
-			/**
-			 * filtramos por las palabras deseadas en el
-			 * título, compañía y locación en el trabajo
-			 */
-			if (this.keyWordsWanted.length) {
-				for await (const keyword of this.keyWordsWanted) {
-					if (
-						job.title.toLowerCase().normalize('NFD').includes(keyword.toLowerCase()) ||
-						job.company.toLowerCase().normalize('NFD').includes(keyword.toLowerCase()) ||
-						job.location.toLowerCase().normalize('NFD').includes(keyword.toLowerCase())
-					)
-						hasWantedWords = true;
-				}
-			} else {
-				hasWantedWords = true;
-			}
 
 			/**
 			 * filtramos por las palabras no deseadas en el
@@ -272,6 +302,23 @@ export class SearchComponent {
 				}
 			} else {
 				hasUnwantedWords = false;
+			}
+
+			/**
+			 * filtramos por las palabras deseadas en el
+			 * título, compañía y locación en el trabajo
+			 */
+			if (this.keyWordsWanted.length) {
+				for await (const keyword of this.keyWordsWanted) {
+					if (
+						job.title.toLowerCase().normalize('NFD').includes(keyword.toLowerCase()) ||
+						job.company.toLowerCase().normalize('NFD').includes(keyword.toLowerCase()) ||
+						job.location.toLowerCase().normalize('NFD').includes(keyword.toLowerCase())
+					)
+						hasWantedWords = true;
+				}
+			} else {
+				hasWantedWords = true;
 			}
 
 			/**
@@ -296,10 +343,7 @@ export class SearchComponent {
 			 */
 			isAproved = hasWantedWords && !hasUnwantedWords && isDateAproved && isTravelTimeAproved;
 
-			if (isAproved) {
-				console.count('inside for');
-				this.jobsFiltered.push(job);
-			}
+			if (isAproved && !this.jobsFiltered.find(jobFiltered => jobFiltered.title === job.title)) this.jobsFiltered.push(job);
 		}
 	}
 
