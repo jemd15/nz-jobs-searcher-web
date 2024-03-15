@@ -9,11 +9,9 @@
 					<mat-icon matIconPrefix>search</mat-icon>
 					<mat-label>Search</mat-label>
 					<input matInput type="text" [(ngModel)]="searchText" (keydown.enter)="search()" />
-					@if (searchText) {
-						<button matSuffix mat-icon-button aria-label="Clear" (click)="searchText = ''">
-							<mat-icon>close</mat-icon>
-						</button>
-					}
+					<button matSuffix mat-icon-button aria-label="Clear" (click)="searchText = ''" [ngClass]="{ hide: !searchText }">
+						<mat-icon>close</mat-icon>
+					</button>
 				</mat-form-field>
 			</div>
 		</div>
