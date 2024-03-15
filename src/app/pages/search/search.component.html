@@ -1,25 +1,16 @@
 <div class="container margin-top">
 	<div class="row">
 		<div class="col-md-12">
-			<div class="row margin-top between-md">
+			<div class="row">
 				<div class="col-md-3">
+					<mat-toolbar>
+						<mat-icon>filter_list</mat-icon>
+						<span class="title">Filter</span>
+						<a mat-flat-button (click)="clearFilters()">Clear</a>
+					</mat-toolbar>
 					<mat-card appearance="outlined">
 						<mat-card-content>
-							<div class="row middle-md">
-								<div class="col-md-2">
-									<mat-icon>filter_list</mat-icon>
-								</div>
-								<div class="col-md">
-									<h1 class="no-margin">Filter</h1>
-								</div>
-								<div class="col-md-4">
-									<a mat-flat-button (click)="clearFilters()">Clear</a>
-								</div>
-							</div>
-
-							<mat-divider></mat-divider>
-
-							<div mat-subheader class="margin-top">Words wanted</div>
+							<div mat-subheader>Words wanted</div>
 							<mat-form-field appearance="outline">
 								<mat-chip-grid #wantedChipsGrid aria-label="Enter keywords">
 									@for (keyword of keyWordsWanted; track keyword) {

@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	selector: 'app-navbar',
@@ -14,5 +15,28 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 	styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-	public filterText: string = '';
+	public searchText: string = '';
+
+	constructor(
+		private route: ActivatedRoute,
+		private router: Router,
+	) {
+		// acomodamos los filtros según los queryParameters
+		this.route.queryParamMap
+			.subscribe(params => {
+				this.searchText = params.get('search') || this.searchText;
+			})
+			.unsubscribe();
+	}
+
+	public search() {
+		this.router.navigate([], {
+			relativeTo: this.route,
+			queryParams: {
+				search: this.searchText,
+				maxTravelTime: 120,
+				maxListingDateDays: 60,
+			},
+		});
+	}
 }

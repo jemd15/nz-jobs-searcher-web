@@ -61,6 +61,7 @@ export class SearchComponent {
 	public maxListingDateDays: number = 60;
 	public jobs: Job[] = [];
 	public jobsFiltered: Job[] = [];
+	private lastSearchId: number = 0;
 
 	constructor(
 		private api: ApiService,
@@ -78,19 +79,18 @@ export class SearchComponent {
 		}
 
 		// acomodamos los filtros según los queryParameters
-		this.route.queryParamMap
-			.subscribe(params => {
-				console.log('then');
-				this.search = params.get('search') || this.search;
-				this.keyWordsWanted = params.get('keyWordsWanted')?.split(',') || this.keyWordsWanted;
-				this.keyWordsUnwanted = params.get('keyWordsUnwanted')?.split(',') || this.keyWordsUnwanted;
-				this.maxTravelTime = parseInt(params.get('maxTravelTime') || this.maxTravelTime.toString(), 10);
-				this.maxListingDateDays = parseInt(params.get('maxListingDateDays') || this.maxListingDateDays.toString(), 10);
+		this.route.queryParamMap.subscribe(params => {
+			let previousSearch = this.search;
 
-				// realizamos la búsqueda
-				this.getJobs();
-			})
-			.unsubscribe();
+			this.search = params.get('search') || this.search;
+			this.keyWordsWanted = params.get('keyWordsWanted')?.split(',') || this.keyWordsWanted;
+			this.keyWordsUnwanted = params.get('keyWordsUnwanted')?.split(',') || this.keyWordsUnwanted;
+			this.maxTravelTime = parseInt(params.get('maxTravelTime') || this.maxTravelTime.toString(), 10);
+			this.maxListingDateDays = parseInt(params.get('maxListingDateDays') || this.maxListingDateDays.toString(), 10);
+
+			// realizamos la búsqueda
+			if (this.search && previousSearch !== this.search) this.getJobs();
+		});
 
 		dayjs.extend(isBetween);
 	}
@@ -179,19 +179,30 @@ export class SearchComponent {
 	}
 
 	private getJobs() {
+		this.clearTable(); // limpiamos la tabla de resultados en cada búsqueda
+
 		const search_id = this.ws.connect();
+		this.lastSearchId = search_id;
+
 		this.ws.emit('search', {
 			search_id,
 			search: this.search,
 			topics: [],
 			minPage: 1,
-			maxPage: 30,
+			maxPage: 15,
 		});
-		console.log(`search_id: search_${search_id}`);
+
 		this.ws.listen('search').subscribe(async (data: Job) => {
-			await this.getDistanceInfo(data);
-			await this.filterJobs();
+			if (this.lastSearchId === data.search_id) {
+				await this.getDistanceInfo(data);
+				await this.filterJobs();
+			}
 		});
+	}
+
+	private clearTable() {
+		this.jobs = [];
+		if (this.jobsTableComponent) this.jobsTableComponent.jobs = this.jobs;
 	}
 
 	private async getDistanceInfo(data: Job) {

@@ -6,12 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { DatePipe, NgClass } from '@angular/common';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
 	selector: 'app-jobs-table',
 	standalone: true,
 	// imports: [MatTableModule, MatSortModule, MatIconModule],
-	imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass, MatCardModule],
+	imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass, MatCardModule, MatToolbarModule],
 	templateUrl: './jobs-table.component.html',
 	styleUrl: './jobs-table.component.css',
 	changeDetection: ChangeDetectionStrategy.OnPush,

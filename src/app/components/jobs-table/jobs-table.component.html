@@ -1,6 +1,8 @@
 @if (jobs.length) {
-	<h1>{{ jobs.length }} results of {{ search }}</h1>
-	<mat-card>
+	<mat-toolbar>
+		<span class="title">{{ jobs.length }} results for '{{ search }}'</span>
+	</mat-toolbar>
+	<mat-card appearance="outlined">
 		<mat-card-content>
 			<table mat-table [dataSource]="dataSource" matSort matSortActive="title" matSortDisableClear matSortDirection="asc">
 				<!-- Progress Column -->

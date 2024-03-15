@@ -12,4 +12,5 @@ export interface Job {
 	img: string;
 	travelTime: string;
 	accent?: string;
+	search_id?: number;
 }

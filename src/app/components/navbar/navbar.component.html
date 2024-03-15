@@ -8,16 +8,13 @@
 				<mat-form-field appearance="outline" color="accent">
 					<mat-icon matIconPrefix>search</mat-icon>
 					<mat-label>Search</mat-label>
-					<input matInput type="text" [(ngModel)]="filterText" />
-					@if (filterText) {
-						<button matSuffix mat-icon-button aria-label="Clear" (click)="filterText = ''">
+					<input matInput type="text" [(ngModel)]="searchText" (keydown.enter)="search()" />
+					@if (searchText) {
+						<button matSuffix mat-icon-button aria-label="Clear" (click)="searchText = ''">
 							<mat-icon>close</mat-icon>
 						</button>
 					}
 				</mat-form-field>
-			</div>
-			<div class="col-md-1">
-				<a mat-flat-button color="primary"><mat-icon>account_circle</mat-icon>Perfil</a>
 			</div>
 		</div>
 	</div>
