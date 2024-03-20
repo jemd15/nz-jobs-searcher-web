@@ -71,7 +71,7 @@ export class SearchComponent {
 	) {
 		// cargamos las direcciones desde localStorage en memoria
 		this.locations = JSON.parse(localStorage.getItem('locations') || '[]');
-		this.locationsUnknown = JSON.parse(localStorage.getItem('locationsUnknown') || '[]')?.locations;
+		this.locationsUnknown = JSON.parse(localStorage.getItem('locationsUnknown') || '[]')?.locations || [];
 
 		if (!dayjs(JSON.parse(localStorage.getItem('locationsUnknown') || '[]').date).isSame(dayjs(), 'week')) {
 			localStorage.removeItem('locationsUnknown');
@@ -189,7 +189,7 @@ export class SearchComponent {
 			search: this.search,
 			topics: [],
 			minPage: 1,
-			maxPage: 15,
+			maxPage: 10,
 		});
 
 		this.ws.listen('search').subscribe(async (data: Job) => {
