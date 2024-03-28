@@ -6,12 +6,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
 	selector: 'app-navbar',
 	standalone: true,
-	imports: [MatToolbarModule, FormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatButtonModule, NgClass],
+	imports: [MatToolbarModule, FormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatButtonModule, NgClass, RouterModule],
 	templateUrl: './navbar.component.html',
 	styleUrl: './navbar.component.css',
 })

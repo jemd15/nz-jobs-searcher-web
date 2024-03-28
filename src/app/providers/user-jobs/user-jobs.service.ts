@@ -30,4 +30,8 @@ export class UserJobsService {
 
 		return this.jobs;
 	}
+
+	public getJobsApplied(): Job[] {
+		return this.jobs.filter(job => job.status === 'applied');
+	}
 }

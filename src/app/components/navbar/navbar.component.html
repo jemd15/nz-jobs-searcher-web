@@ -1,28 +1,5 @@
-<!-- <mat-toolbar color="primary">
-	<div class="container-fluid">
-		<div class="row between-md middle-md">
-			<div class="col-md">
-				<h1>Nz Job Searcher</h1>
-			</div>
-			<div class="col-md-3">
-				<mat-form-field appearance="outline" color="accent">
-					<mat-icon matIconPrefix>search</mat-icon>
-					<mat-label>Search</mat-label>
-					<input matInput type="text" [(ngModel)]="searchText" (keydown.enter)="search()" />
-					<button matSuffix mat-icon-button aria-label="Clear" (click)="searchText = ''" [ngClass]="{ hide: !searchText }">
-						<mat-icon>close</mat-icon>
-					</button>
-				</mat-form-field>
-			</div>
-			<div class="col-md-1">
-				<a mat-flat-button color="primary"><mat-icon>account_circle</mat-icon>Perfil</a>
-			</div>
-		</div>
-	</div>
-</mat-toolbar> -->
-
 <mat-toolbar class="navbar" color="primary">
-	<span class="title">Nz Job Searcher</span>
+	<span class="title" routerLink="/search">Nz Job Searcher</span>
 	<div class="search">
 		<mat-form-field appearance="outline" color="accent">
 			<mat-icon matIconPrefix>search</mat-icon>
@@ -33,5 +10,5 @@
 			</button>
 		</mat-form-field>
 	</div>
-	<a mat-flat-button color="primary"><mat-icon>account_circle</mat-icon>Perfil</a>
+	<a mat-flat-button color="primary" routerLink="/account"><mat-icon>account_circle</mat-icon>Perfil</a>
 </mat-toolbar>
