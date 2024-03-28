@@ -108,3 +108,11 @@ mat-card-actions {
 	flex: 1 1 auto;
 	padding-left: 10px;
 }
+
+.status-btn {
+	width: 87px;
+}
+
+.site-link {
+	width: 178px;
+}
