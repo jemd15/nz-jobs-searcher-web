@@ -32,6 +32,7 @@ export class JobsTableComponent implements AfterViewInit {
 		return this._jobs;
 	}
 	@Input() title!: string;
+	@Input() status!: string;
 	public displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'status', 'site', ' '];
 	public dataSource!: MatTableDataSource<Job>;
 	public currentPage: number = 1;
@@ -44,6 +45,8 @@ export class JobsTableComponent implements AfterViewInit {
 	) {}
 
 	onJobsChanged() {
+		this._jobs = this._jobs.filter(job => !this.status || job.status === this.status);
+
 		this.dataSource = new MatTableDataSource(this._jobs);
 		this.cdr.markForCheck();
 	}
@@ -64,5 +67,7 @@ export class JobsTableComponent implements AfterViewInit {
 	public updateJobStatus(job: Job, status: 'new' | 'visited' | 'applied') {
 		job.status = status;
 		this.userJobs.updateJob(job);
+
+		this.onJobsChanged();
 	}
 }
