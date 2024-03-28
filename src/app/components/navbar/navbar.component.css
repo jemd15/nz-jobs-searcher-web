@@ -6,3 +6,11 @@
 mat-form-field {
 	width: 100%;
 }
+
+.search {
+	margin-right: 16px;
+}
+
+.navbar {
+	padding: 0 2vw;
+}

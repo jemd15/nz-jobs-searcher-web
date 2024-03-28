@@ -194,6 +194,7 @@ export class SearchComponent {
 
 		this.ws.listen('search').subscribe(async (data: Job) => {
 			if (this.lastSearchId === data.search_id) {
+				data.status = 'new';
 				await this.getDistanceInfo(data);
 				await this.filterJobs();
 			}

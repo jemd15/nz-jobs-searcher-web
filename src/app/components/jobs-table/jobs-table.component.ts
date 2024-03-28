@@ -7,12 +7,13 @@ import { DatePipe, NgClass } from '@angular/common';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
 	selector: 'app-jobs-table',
 	standalone: true,
 	// imports: [MatTableModule, MatSortModule, MatIconModule],
-	imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass, MatCardModule, MatToolbarModule],
+	imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass, MatCardModule, MatToolbarModule, MatButtonModule],
 	templateUrl: './jobs-table.component.html',
 	styleUrl: './jobs-table.component.css',
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,7 +30,7 @@ export class JobsTableComponent implements AfterViewInit {
 		return this._jobs;
 	}
 	@Input() search!: string;
-	public displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'site', ' '];
+	public displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'status', 'site', '...'];
 	public dataSource!: MatTableDataSource<Job>;
 	public currentPage: number = 1;
 	public pageSize: number = 10;

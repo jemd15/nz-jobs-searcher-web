@@ -98,3 +98,13 @@ mat-card-actions {
 .hide {
 	visibility: hidden;
 }
+
+.container-fluid {
+	padding-right: 2vw;
+	padding-left: 2vw;
+}
+
+.title {
+	flex: 1 1 auto;
+	padding-left: 10px;
+}

@@ -13,4 +13,5 @@ export interface Job {
 	travelTime: string;
 	accent?: string;
 	search_id?: number;
+	status?: 'new' | 'visited' | 'applied';
 }
