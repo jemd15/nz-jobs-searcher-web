@@ -70,4 +70,9 @@ export class JobsTableComponent implements AfterViewInit {
 
 		this.onJobsChanged();
 	}
+
+	public visitJobSite(event: MouseEvent, row: Job): void {
+		// Check if the middle mouse button (button 1) is clicked
+		if ((event.button === 1 || event.button === 0) && row.status === 'new') this.updateJobStatus(row, 'visited');
+	}
 }

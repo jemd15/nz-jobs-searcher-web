@@ -73,7 +73,7 @@
 				<ng-container matColumnDef="site">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Site </th>
 					<td mat-cell *matCellDef="let row">
-						<a class="site-link" mat-stroked-button [href]="row.url" target="_blank" (click)="updateJobStatus(row, 'visited')" (auxclick)="updateJobStatus(row, 'visited')">{{ row.site }}</a>
+						<a class="site-link" mat-stroked-button [href]="row.url" target="_blank" (mousedown)="visitJobSite($event, row)">{{ row.site }}</a>
 					</td>
 				</ng-container>
 
