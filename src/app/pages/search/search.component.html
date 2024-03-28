@@ -63,7 +63,7 @@
 					</mat-card>
 				</div>
 				<div class="col-md-9">
-					<app-jobs-table [jobs]="jobsFiltered" [search]="search"></app-jobs-table>
+					<app-jobs-table [jobs]="jobsFiltered" title="{{ jobsFiltered.length }} results for '{{ search }}'"></app-jobs-table>
 				</div>
 			</div>
 		</div>

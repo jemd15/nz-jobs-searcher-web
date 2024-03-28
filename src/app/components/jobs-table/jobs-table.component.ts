@@ -31,7 +31,7 @@ export class JobsTableComponent implements AfterViewInit {
 	get jobs() {
 		return this._jobs;
 	}
-	@Input() search!: string;
+	@Input() title!: string;
 	public displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'status', 'site', ' '];
 	public dataSource!: MatTableDataSource<Job>;
 	public currentPage: number = 1;
