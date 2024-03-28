@@ -103,13 +103,16 @@
 <mat-menu #actionMenu="matMenu">
 	<ng-template matMenuContent let-job="job">
 		<button (click)="updateJobStatus(job, 'new')" mat-menu-item>
-			<span>Mark as New</span>
+			<span class="menu-item">Mark as</span>
+			<button mat-flat-button color="accent">new</button>
 		</button>
 		<button (click)="updateJobStatus(job, 'visited')" mat-menu-item>
-			<span>Mark as Visited</span>
+			<span class="menu-item">Mark as</span>
+			<button mat-flat-button disabled>visited</button>
 		</button>
 		<button (click)="updateJobStatus(job, 'applied')" mat-menu-item>
-			<span>Mark as Applied</span>
+			<span class="menu-item">Mark as</span>
+			<button mat-flat-button color="primary">applied</button>
 		</button>
 	</ng-template>
 </mat-menu>
