@@ -73,21 +73,15 @@
 				<ng-container matColumnDef="site">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Site </th>
 					<td mat-cell *matCellDef="let row">
-						<a mat-stroked-button [href]="row.url" target="_blank">{{ row.site }}</a>
+						<a mat-stroked-button [href]="row.url" target="_blank" (click)="updateJobStatus(row, 'visited')">{{ row.site }}</a>
 					</td>
 				</ng-container>
 
-				<!-- Url Column -->
-				<ng-container matColumnDef="...">
-					<th mat-header-cell *matHeaderCellDef mat-sort-header>
-						<button mat-icon-button>
-							<mat-icon>more_horiz</mat-icon>
-						</button>
-					</th>
+				<!-- Action Column -->
+				<ng-container matColumnDef=" ">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header></th>
 					<td mat-cell *matCellDef="let row">
-						<button mat-icon-button>
-							<mat-icon>more_horiz</mat-icon>
-						</button>
+						<button mat-icon-button [matMenuTriggerFor]="actionMenu" [matMenuTriggerData]="{ job: row }"><mat-icon>more_horiz</mat-icon></button>
 					</td>
 				</ng-container>
 
@@ -105,3 +99,17 @@
 		</div>
 	</div>
 }
+
+<mat-menu #actionMenu="matMenu">
+	<ng-template matMenuContent let-job="job">
+		<button (click)="updateJobStatus(job, 'new')" mat-menu-item>
+			<span>Mark as New</span>
+		</button>
+		<button (click)="updateJobStatus(job, 'visited')" mat-menu-item>
+			<span>Mark as Visited</span>
+		</button>
+		<button (click)="updateJobStatus(job, 'applied')" mat-menu-item>
+			<span>Mark as Applied</span>
+		</button>
+	</ng-template>
+</mat-menu>

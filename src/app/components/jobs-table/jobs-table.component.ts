@@ -8,12 +8,14 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { UserJobsService } from '../../providers/user-jobs/user-jobs.service';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
 	selector: 'app-jobs-table',
 	standalone: true,
 	// imports: [MatTableModule, MatSortModule, MatIconModule],
-	imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass, MatCardModule, MatToolbarModule, MatButtonModule],
+	imports: [MatTableModule, MatIconModule, DatePipe, MatPaginatorModule, NgClass, MatCardModule, MatToolbarModule, MatButtonModule, MatMenuModule],
 	templateUrl: './jobs-table.component.html',
 	styleUrl: './jobs-table.component.css',
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,13 +32,16 @@ export class JobsTableComponent implements AfterViewInit {
 		return this._jobs;
 	}
 	@Input() search!: string;
-	public displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'status', 'site', '...'];
+	public displayedColumns: string[] = ['title', 'location', 'travelTime', 'listingDate', 'salary', 'status', 'site', ' '];
 	public dataSource!: MatTableDataSource<Job>;
 	public currentPage: number = 1;
 	public pageSize: number = 10;
 	public pageSizeOptions: number[] = [5, 10, 25, 100];
 
-	constructor(private cdr: ChangeDetectorRef) {}
+	constructor(
+		private cdr: ChangeDetectorRef,
+		private userJobs: UserJobsService,
+	) {}
 
 	onJobsChanged() {
 		this.dataSource = new MatTableDataSource(this._jobs);
@@ -55,4 +60,9 @@ export class JobsTableComponent implements AfterViewInit {
 	}
 
 	public paginate(jobs: Job[]) {}
+
+	public updateJobStatus(job: Job, status: 'new' | 'visited' | 'applied') {
+		job.status = status;
+		this.userJobs.updateJob(job);
+	}
 }

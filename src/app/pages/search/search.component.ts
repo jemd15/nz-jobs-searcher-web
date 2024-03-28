@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserJobsService } from '../../providers/user-jobs/user-jobs.service';
 
 @Component({
 	selector: 'app-search',
@@ -68,6 +69,7 @@ export class SearchComponent {
 		protected ws: WebSocketService,
 		private route: ActivatedRoute,
 		private router: Router,
+		private userJobs: UserJobsService,
 	) {
 		// cargamos las direcciones desde localStorage en memoria
 		this.locations = JSON.parse(localStorage.getItem('locations') || '[]');
@@ -194,7 +196,7 @@ export class SearchComponent {
 
 		this.ws.listen('search').subscribe(async (data: Job) => {
 			if (this.lastSearchId === data.search_id) {
-				data.status = 'new';
+				data.status = this.userJobs.getJobStatus(data);
 				await this.getDistanceInfo(data);
 				await this.filterJobs();
 			}
