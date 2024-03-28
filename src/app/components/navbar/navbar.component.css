@@ -12,5 +12,5 @@ mat-form-field {
 }
 
 .navbar {
-	padding: 0 2vw;
+	padding: 0 var(--container-padding);
 }

@@ -1,4 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+	--container-padding: 8vw;
+}
+
 html,
 body {
 	height: 100%;
@@ -100,8 +105,8 @@ mat-card-actions {
 }
 
 .container-fluid {
-	padding-right: 2vw;
-	padding-left: 2vw;
+	padding-right: var(--container-padding);
+	padding-left: var(--container-padding);
 }
 
 .title {
